@@ -1,7 +1,7 @@
 ﻿<Window x:Class="IMStalker.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Height="331" Width="393" Title="Messenger Stalker">
+    Height="331" Width="393" Title="Messenger Stalker" Closed="Window_Closed">
     <Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="auto" />
@@ -15,6 +15,7 @@
 		<Label Grid.Row="0" Grid.Column="0" Margin="5">Signin:</Label>
 		<TextBox Grid.Row="0" Grid.Column="1" Margin="5" Name="Identifier" KeyDown="Identifier_KeyDown"></TextBox>
 		<Button Grid.Row="0" Grid.Column="2" Margin="5" Click="Button_Click" Name="StalkButton">Stalk</Button>
+		<Button Grid.Row="0" Grid.Column="2" Margin="5" Click="StopButton_Click" Name="StopButton" Visibility="Collapsed">Stop</Button>
 		
 		<ListBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" FontFamily="Consolas" Margin="5" Name="StalkLog" SelectionMode="Single"></ListBox>
     </Grid>

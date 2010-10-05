@@ -48,6 +48,16 @@ namespace IMStalker
 			StartStalker();
 		}
 
+		private void StopButton_Click(object sender, RoutedEventArgs e)
+		{
+			StopStalker();
+		}
+
+		private void Window_Closed(object sender, EventArgs e)
+		{
+			StopStalker();
+		}
+
 		private void Identifier_KeyDown(object sender, KeyEventArgs e)
 		{
 			if (e.Key == Key.Enter)
@@ -63,7 +73,17 @@ namespace IMStalker
 			stalkerThread.Start(Identifier.Text);
 
 			Identifier.IsEnabled = false;
-			StalkButton.IsEnabled = false;
+			StalkButton.Visibility = Visibility.Collapsed;
+			StopButton.Visibility = Visibility.Visible;
+		}
+
+		private void StopStalker()
+		{
+			if (stalkerThread != null && stalkerThread.IsAlive)
+			{
+				stalkerThread.Abort();
+				stalkerThread = null;
+			}
 		}
 
 		private void Run(object parameter)
@@ -98,12 +118,16 @@ namespace IMStalker
 				switch ((uint)ce.ErrorCode)
 				{
 					case 0x8100030a:
-						Log("User {0} not available.", id);
+						Log("User <{0}> not available.", id);
 						break;
 					default:
 						Log("Error 0x{0:x} happened", ce.ErrorCode);
 						break;
 				}
+			}
+			catch (ThreadAbortException)
+			{
+				Log("stopping <{0}>", id);
 			}
 			catch (Exception e)
 			{
@@ -112,7 +136,8 @@ namespace IMStalker
 
 			logfile = null;
 			Dispatcher.Invoke(new Action<DependencyProperty, object>(Identifier.SetValue), Control.IsEnabledProperty, true);
-			Dispatcher.Invoke(new Action<DependencyProperty, object>(StalkButton.SetValue), Control.IsEnabledProperty, true);
+			Dispatcher.Invoke(new Action<DependencyProperty, object>(StalkButton.SetValue), Control.VisibilityProperty, Visibility.Visible);
+			Dispatcher.Invoke(new Action<DependencyProperty, object>(StopButton.SetValue), Control.VisibilityProperty, Visibility.Collapsed);
 		}
 
 		private static string GetStatusText(MISTATUS s)
