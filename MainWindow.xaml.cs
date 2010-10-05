@@ -23,7 +23,7 @@ namespace IMStalker
 	/// <summary>
 	/// Interaction logic for Window1.xaml
 	/// </summary>
-	public partial class Window1 : Window
+	public partial class MainWindow : Window
 	{
 		Thread stalkerThread;
 		string logfile = null;
