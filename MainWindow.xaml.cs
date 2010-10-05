@@ -28,7 +28,7 @@ namespace IMStalker
 		Thread stalkerThread;
 		string logfile = null;
 
-		public Window1()
+		public MainWindow()
 		{
 			InitializeComponent();
 		}
