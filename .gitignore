@@ -1,0 +1,10 @@
+[Oo]bj/
+[Bb]in/
+*.suo
+*.csproj.user
+/TestResults
+*.vspscc
+*.vssscc
+*~
+*.swp
+*.cache
