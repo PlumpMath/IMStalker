@@ -1,18 +1,18 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMStalker", "IMStalker.csproj", "{F5CBCA49-B1DB-461F-A25C-2A5816D1E450}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F5CBCA49-B1DB-461F-A25C-2A5816D1E450}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F5CBCA49-B1DB-461F-A25C-2A5816D1E450}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F5CBCA49-B1DB-461F-A25C-2A5816D1E450}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F5CBCA49-B1DB-461F-A25C-2A5816D1E450}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5CBCA49-B1DB-461F-A25C-2A5816D1E450}.Debug|x86.ActiveCfg = Debug|x86
+		{F5CBCA49-B1DB-461F-A25C-2A5816D1E450}.Debug|x86.Build.0 = Debug|x86
+		{F5CBCA49-B1DB-461F-A25C-2A5816D1E450}.Release|x86.ActiveCfg = Release|x86
+		{F5CBCA49-B1DB-461F-A25C-2A5816D1E450}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
