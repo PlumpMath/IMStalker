@@ -13,7 +13,7 @@
 			<ColumnDefinition Width="auto"/>
 		</Grid.ColumnDefinitions>
 		<Label Grid.Row="0" Grid.Column="0" Margin="5">Signin:</Label>
-		<TextBox Grid.Row="0" Grid.Column="1" Margin="5" Name="Identifier" KeyDown="Identifier_KeyDown"></TextBox>
+		<ComboBox IsEditable="True" Grid.Row="0" Grid.Column="1" Margin="5" Name="Identifier" KeyDown="Identifier_KeyDown"></ComboBox>
 		<Button Grid.Row="0" Grid.Column="2" Margin="5" Click="Button_Click" Name="StalkButton">Stalk</Button>
 		<Button Grid.Row="0" Grid.Column="2" Margin="5" Click="StopButton_Click" Name="StopButton" Visibility="Collapsed">Stop</Button>
 		

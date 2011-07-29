@@ -31,6 +31,28 @@ namespace IMStalker
 		public MainWindow()
 		{
 			InitializeComponent();
+
+			SetPreviousLogs();
+		}
+
+		private void SetPreviousLogs()
+		{
+			var logs = from f in Directory.GetFiles(".", "*.log")
+					   orderby File.GetLastWriteTime(f) descending
+					   select System.IO.Path.GetFileNameWithoutExtension(f);
+
+			foreach (var log in logs)
+			{
+				Identifier.Items.Add(log);
+			}
+		}
+
+		private void SetNewLog(string id)
+		{
+			Identifier.Items.Remove(id);
+			Identifier.Items.Insert(0, id);
+			Identifier.Text = id;
+
 		}
 
 		private void Log(string l, params object[] args)
@@ -88,16 +110,18 @@ namespace IMStalker
 
 		private void Run(object parameter)
 		{
-			string id = parameter.ToString();
-			string name = string.Format("<{0}>", id);
+			string name = string.Format("<{0}>", parameter.ToString());
 
 			try
 			{
 				IMessenger4 msn = new MessengerClass();
-				IMessengerContact contact = (IMessengerContact)msn.GetContact(id, "");
+				IMessengerContact contact = (IMessengerContact)msn.GetContact(parameter.ToString(), "");
 				name = string.Format("{0} <{1}>", contact.FriendlyName, contact.SigninName);
 
-				logfile = id + ".log";
+				logfile = contact.SigninName + ".log";
+				
+				Dispatcher.Invoke(new Action<string>(SetNewLog), contact.SigninName);
+
 				Log("stalking {0}", name);
 
 				MISTATUS last = MISTATUS.MISTATUS_UNKNOWN;
