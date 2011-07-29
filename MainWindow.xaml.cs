@@ -35,7 +35,7 @@ namespace IMStalker
 
 		private void Log(string l, params object[] args)
 		{
-			string text = "[" + DateTime.Now + "] " + string.Format(l, args);
+			string text = "[" + DateTime.Now.ToString("s") + "] " + string.Format(l, args);
 			Dispatcher.Invoke(new Func<object, int>(StalkLog.Items.Add), text);
 			if (logfile != null)
 			{
@@ -89,14 +89,16 @@ namespace IMStalker
 		private void Run(object parameter)
 		{
 			string id = parameter.ToString();
+			string name = string.Format("<{0}>", id);
 
 			try
 			{
 				IMessenger4 msn = new MessengerClass();
 				IMessengerContact contact = (IMessengerContact)msn.GetContact(id, "");
+				name = string.Format("{0} <{1}>", contact.FriendlyName, contact.SigninName);
 
 				logfile = id + ".log";
-				Log("stalking <{0}>", id);
+				Log("stalking {0}", name);
 
 				MISTATUS last = MISTATUS.MISTATUS_UNKNOWN;
 
@@ -106,7 +108,7 @@ namespace IMStalker
 
 					if (now != last)
 					{
-						Log("<{0}>: {1}", contact.FriendlyName, GetStatusText(now));
+						Log("{0}: {1}", name, GetStatusText(now));
 						last = now;
 					}
 
@@ -118,7 +120,7 @@ namespace IMStalker
 				switch ((uint)ce.ErrorCode)
 				{
 					case 0x8100030a:
-						Log("User <{0}> not available.", id);
+						Log("User {0} not available.", name);
 						break;
 					default:
 						Log("Error 0x{0:x} happened", ce.ErrorCode);
@@ -127,17 +129,19 @@ namespace IMStalker
 			}
 			catch (ThreadAbortException)
 			{
-				Log("stopping <{0}>", id);
+				Log("stopping {0}", name);
 			}
 			catch (Exception e)
 			{
 				Log("Unknown error: {0}", e.Message);
 			}
-
-			logfile = null;
-			Dispatcher.Invoke(new Action<DependencyProperty, object>(Identifier.SetValue), Control.IsEnabledProperty, true);
-			Dispatcher.Invoke(new Action<DependencyProperty, object>(StalkButton.SetValue), Control.VisibilityProperty, Visibility.Visible);
-			Dispatcher.Invoke(new Action<DependencyProperty, object>(StopButton.SetValue), Control.VisibilityProperty, Visibility.Collapsed);
+			finally
+			{
+				logfile = null;
+				Dispatcher.Invoke(new Action<DependencyProperty, object>(Identifier.SetValue), Control.IsEnabledProperty, true);
+				Dispatcher.Invoke(new Action<DependencyProperty, object>(StalkButton.SetValue), Control.VisibilityProperty, Visibility.Visible);
+				Dispatcher.Invoke(new Action<DependencyProperty, object>(StopButton.SetValue), Control.VisibilityProperty, Visibility.Collapsed);
+			}
 		}
 
 		private static string GetStatusText(MISTATUS s)
