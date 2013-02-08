@@ -14,9 +14,10 @@ using System.Windows.Shapes;
 using System.Collections.ObjectModel;
 using System.Threading;
 
-using MessengerAPI;
+using SKYPE4COMLib;
 using System.Runtime.InteropServices;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace IMStalker
 {
@@ -114,21 +115,21 @@ namespace IMStalker
 
 			try
 			{
-				IMessenger4 msn = new MessengerClass();
-				IMessengerContact contact = (IMessengerContact)msn.GetContact(parameter.ToString(), "");
-				name = string.Format("{0} <{1}>", contact.FriendlyName, contact.SigninName);
+				ISkype skype = new Skype();
+				IUser user = (IUser)skype.get_User(parameter.ToString());
+				name = string.Format("{0} <{1}>", user.FullName, user.Handle);
 
-				logfile = contact.SigninName + ".log";
-				
-				Dispatcher.Invoke(new Action<string>(SetNewLog), contact.SigninName);
+				logfile = user.Handle + ".log";
+
+				Dispatcher.Invoke(new Action<string>(SetNewLog), user.Handle);
 
 				Log("stalking {0}", name);
 
-				MISTATUS last = MISTATUS.MISTATUS_UNKNOWN;
+				TOnlineStatus last = TOnlineStatus.olsUnknown;
 
 				while (true)
 				{
-					MISTATUS now = contact.Status;
+					TOnlineStatus now = user.OnlineStatus;
 
 					if (now != last)
 					{
@@ -168,9 +169,9 @@ namespace IMStalker
 			}
 		}
 
-		private static string GetStatusText(MISTATUS s)
+		private static string GetStatusText(TOnlineStatus s)
 		{
-			return s.ToString().Substring(9).Replace('_', ' ').ToLowerInvariant();
+			return Regex.Replace(s.ToString().Substring(3), "([a-z])([A-Z])", "$1 $2").ToLowerInvariant();
 		}
 	}
 }
